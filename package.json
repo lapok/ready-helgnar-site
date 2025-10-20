@@ -1,0 +1,57 @@
+{
+  "name": "helgnar-the-conqueror-website",
+  "version": "1.0.0",
+  "description": "Official website for Helgnar the Conqueror game by Hellknights Studios",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --port=3000 --open=/index.html",
+    "build": "npm run convert-webp && npm run minify-css && npm run minify-js",
+    "convert-webp": "node convert-to-webp.js",
+    "minify-css": "npx clean-css-cli -o css/style.min.css css/style.css",
+    "minify-js": "npx uglify-js js/main.js -o js/main.min.js -c -m",
+    "optimize-images": "npx imagemin assets/**/*.{jpg,png} --out-dir=assets-optimized",
+    "lighthouse": "npx lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/helgnar-site.git"
+  },
+  "keywords": [
+    "helgnar",
+    "conqueror",
+    "game",
+    "website",
+    "hellknights",
+    "studios",
+    "rpg",
+    "fantasy",
+    "gaming"
+  ],
+  "author": "Hellknights Studios",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/helgnar-site/issues"
+  },
+  "homepage": "https://YOUR_USERNAME.github.io/helgnar-site",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.2",
+    "uglify-js": "^3.17.4",
+    "imagemin-cli": "^7.0.0",
+    "lighthouse": "^10.4.0",
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1",
+    "sharp": "^0.32.6"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
+
