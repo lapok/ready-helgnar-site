@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isSticky = false;
 
   function handleScroll() {
-    const aboutWrapper = document.getElementById('about-wrapper');
-    const aboutTop = aboutWrapper ? aboutWrapper.offsetTop : aboutSection.offsetTop;
+    const aboutTop = aboutSection.offsetTop;
     const scrollY = window.scrollY;
 
     if (scrollY >= aboutTop - 50 && !isSticky) {
@@ -45,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(section => {
       const sectionId = section.getAttribute('id');
       
-      // Skip about-wrapper, we'll handle about separately
-      if (sectionId === 'about-wrapper') return;
+      // Skip about section, we'll handle it separately
+      if (sectionId === 'about') return;
       
       const sectionTop = section.offsetTop - 100;
       const sectionHeight = section.offsetHeight;
@@ -56,14 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
     
-    // Special handling for about section inside about-wrapper
-    const aboutWrapper = document.getElementById('about-wrapper');
+    // Special handling for about section
     const aboutSection = document.getElementById('about');
-    if (aboutWrapper && aboutSection) {
-      const wrapperTop = aboutWrapper.offsetTop - 100;
-      const wrapperHeight = aboutWrapper.offsetHeight;
+    if (aboutSection) {
+      const sectionTop = aboutSection.offsetTop - 100;
+      const sectionHeight = aboutSection.offsetHeight;
       
-      if (scrollY >= wrapperTop && scrollY < wrapperTop + wrapperHeight) {
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
         currentSection = 'about';
       }
     }
@@ -700,9 +698,9 @@ function getSlideWidth() {
         });
       } else if (targetId === '#about') {
         // Special handling for about section
-        const aboutWrapper = document.querySelector('#about-wrapper');
-        if (aboutWrapper) {
-          const offsetTop = aboutWrapper.offsetTop - 80;
+        const aboutSection = document.querySelector('#about');
+        if (aboutSection) {
+          const offsetTop = aboutSection.offsetTop - 80;
           window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
