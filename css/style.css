@@ -471,6 +471,7 @@ body{
 }
 
 .about-2, .about-3 {
+
     position: absolute;
     width: 100%;
     height: 1080px;
@@ -483,15 +484,16 @@ body{
 .about-2 {
     top: 0;
     background-image: url('../assets/images/быстрее.png');
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
+
 }
 
 .about-3 {
     top: 1080px;
     background-image: url('../assets/images/адекватный html.png');
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -664,23 +666,28 @@ body{
   z-index: 1;
 }
 
+.about-2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
 .about-1 .container {
   position: relative;
   z-index: 2;
 }
 
-.about-2 {
-  background-image: url('../assets/images/быстрее.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
 .about-3 {
-  background-image: url('../assets/images/адекватный html.png');
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
+
 }
 
 
@@ -962,6 +969,7 @@ html.webp .about-bg-2 {
   background-image: url('../assets/images/БЕЗ ФИЛЬТРА ФИНАЛ.webp') !important;
 }
 
+
 html.webp .media {
   background: #0a0a0a url('../assets/images/mediaBg.webp') !important;
 }
@@ -986,6 +994,10 @@ html.no-webp .about-bg-1 {
 html.no-webp .about-bg-2 {
   background-image: url('../assets/images/БЕЗ ФИЛЬТРА ФИНАЛ.png') !important;
 }
+
+
+
+
 
 html.no-webp .media {
   background: #0a0a0a url('../assets/images/mediaBg.png') !important;
@@ -1194,23 +1206,70 @@ html.no-webp .media {
   padding: 10px 0;
   /* Убираем растягивание */
   box-sizing: border-box;
+  /* Добавляем градиентные индикаторы скролла */
+  position: relative;
+  /* Убрали курсоры grab/grabbing, так как убрали drag and drop */
+  cursor: default;
+}
+
+/* Градиентные индикаторы скролла для десктопа */
+.features-slider-wrapper::before,
+.features-slider-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.features-slider-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), transparent);
+  opacity: 0;
+}
+
+.features-slider-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
+  opacity: 0;
+}
+
+/* Показываем индикаторы при скролле */
+.features-slider-wrapper.scrollable-left::before {
+  opacity: 1;
+}
+
+.features-slider-wrapper.scrollable-right::after {
+  opacity: 1;
 }
 
 .features-slider-wrapper::-webkit-scrollbar {
-  height: 8px;
+  height: 12px;
 }
 
 .features-slider-wrapper::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  margin: 0 20px;
 }
 
 .features-slider-wrapper::-webkit-scrollbar-thumb {
-  background: #ff0000;
-  border-radius: 4px;
+  background: linear-gradient(45deg, #ff0000, #ff3333);
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .features-slider-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #ff3333;
+  background: linear-gradient(45deg, #ff3333, #ff6666);
+  transform: scaleY(1.2);
+}
+
+.features-slider-wrapper::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(45deg, #cc0000, #ff0000);
 }
 
 .features-slider-track {
@@ -1254,6 +1313,33 @@ html.no-webp .media {
   /* Ограничиваем ширину контролов */
   max-width: 100%;
   overflow: hidden;
+  position: relative;
+}
+
+/* Подсказка о скролле */
+.features-slider-container::after {
+  content: 'Scroll to explore more features';
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #888;
+  opacity: 0.7;
+  pointer-events: none;
+  animation: fadeInOut 3s ease-in-out infinite;
+  transition: opacity 0.5s ease;
+}
+
+/* Скрываем подсказку после взаимодействия */
+.features-slider-container.hint-hidden::after {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
 
 .features-slider-btn {
@@ -1501,13 +1587,72 @@ html.no-webp .media {
   }
   
   .site-header {
-    display: none;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(11, 11, 11, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+  
+  .header-inner {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 15px;
+  }
+  
+  .main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    background: none;
+    width: 100%;
+    padding: 0;
+    order: 2;
+  }
+  
+  .main-nav a {
+    font-size: 14px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .main-nav a:hover {
+    background: rgba(212, 3, 1, 0.8);
+    transform: scale(1.05);
+  }
+  
+  .header-socials {
+    position: static;
+    transform: none;
+    justify-content: center;
+    width: 100%;
+    order: 1;
+    gap: 8px;
+  }
+  
+  .header-socials a {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .header-socials img {
+    width: 16px;
+    height: 16px;
   }
   
   .hero {
     width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
+    padding-top: 120px; /* Добавляем отступ для фиксированной шапки */
   }
   
   .hero-inner {
@@ -2242,6 +2387,16 @@ html.no-webp .media {
   }
 }
 
+/* High DPI displays optimization for background images */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .about-2, .about-3 {
+    background-size: 100% 100%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
+}
+
 /* Very large/small screen font-size control */
 @media (min-width: 2000px){ :root{ font-size: 18px; } }
 @media (min-width: 3000px){ :root{ font-size: 20px; } }
@@ -2540,7 +2695,7 @@ html.no-webp .media {
 /* Мобильная адаптация для Hero секции */
 @media (max-width: 768px) {
     .hero {
-        padding: 80px 0 40px;
+        padding: 140px 0 40px; /* Увеличили отступ сверху для фиксированной шапки */
         min-height: 100vh;
         background-size: cover;
         background-position: center;
@@ -2839,11 +2994,35 @@ html.no-webp .media {
     }
     
     .header-inner {
-        padding: 10px 0;
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 10px;
     }
     
     .main-nav {
-        display: none; /* Скрываем навигацию на мобильных */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        background: none;
+        width: 100%;
+        padding: 0;
+        order: 2;
+    }
+    
+    .main-nav a {
+        font-size: 12px;
+        padding: 6px 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #fff;
+    }
+    
+    .main-nav a:hover {
+        background: rgba(212, 3, 1, 0.8);
+        transform: scale(1.05);
     }
     
     .header-socials {
@@ -2851,6 +3030,18 @@ html.no-webp .media {
         transform: none;
         justify-content: center;
         width: 100%;
+        order: 1;
+        gap: 6px;
+    }
+    
+    .header-socials a {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .header-socials img {
+        width: 14px;
+        height: 14px;
     }
 }
 
@@ -2869,7 +3060,7 @@ html.no-webp .media {
     min-height: 320px;
     z-index: 1;
     pointer-events: none;
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
   }
@@ -2950,9 +3141,10 @@ html.no-webp .media {
     }
 }
 
-/* Contacts Section */
+
+/* contacts section */
 .contacts {
-  padding: 100px 0;
+  padding: 80px 0 40px;
   background: #0a0a0a url('../assets/images/contactsBg.png');
   background-size: cover;
   background-position: center;
@@ -2960,36 +3152,22 @@ html.no-webp .media {
   color: #fff;
   position: relative;
   overflow: hidden;
+  min-height: auto;
 }
 
-
 .contacts-inner {
-  max-width: 95%;
-  margin: 0;
-  padding: 0 0 0 20px;
+  width: min(100% - 40px, var(--container));
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 20px;
   position: relative;
   z-index: 2;
 }
 
 .contacts-header {
   text-align: left;
-  margin-bottom: 60px;
-  padding-left: 105px;
-}
-
-.contacts-content {
-  position: relative;
-  padding-left: 120px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-}
-
-/* Left Section */
-.contacts-left {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  margin-bottom: 40px;
+  padding-left: 80px;
 }
 
 .contacts-title {
@@ -3007,16 +3185,31 @@ html.no-webp .media {
 .contacts-title::before {
   content: '';
   position: absolute;
-  left: -100px;
+  left: -80px;
   top: 50%;
   transform: translateY(-50%);
-  width: 80px;
+  width: 60px;
   height: 3px;
   background: #D40301;
 }
 
+.contacts-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+/* Left Section */
+.contacts-left {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
 .welcome-title {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   font-family: Cambria;
   color: #D40301;
@@ -3031,7 +3224,7 @@ html.no-webp .media {
   line-height: 1.6;
   color: #fff;
   margin: 0;
-  max-width: 500px;
+  max-width: 100%;
 }
 
 .social-icons {
@@ -3039,14 +3232,15 @@ html.no-webp .media {
   align-items: center;
   gap: 12px;
   margin: 10px 0;
+  flex-wrap: wrap;
 }
 
 .social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   transition: transform 0.18s;
   text-decoration: none;
 }
@@ -3056,8 +3250,8 @@ html.no-webp .media {
 }
 
 .social-icon img {
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   filter: brightness(0.7);
   transition: filter 0.18s;
 }
@@ -3070,18 +3264,19 @@ html.no-webp .media {
   font-size: 16px;
   color: #fff;
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Right Section */
 .contacts-right {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
   align-items: flex-start;
 }
 
 .support-title {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   font-family: Cambria;
   color: #D40301;
@@ -3099,7 +3294,7 @@ html.no-webp .media {
   color: #fff;
   text-decoration: none;
   transition: all 0.3s ease;
-  padding: 10px 0;
+  padding: 12px 0;
 }
 
 .kickstarter-link:hover {
@@ -3111,17 +3306,18 @@ html.no-webp .media {
   font-size: 16px;
 }
 
-.payment-info {
+.paypal-container {
+  margin-top: 10px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 300px;
 }
 
-.payment-info p {
-  font-size: 16px;
-  color: #fff;
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+#paypal-container-RCHXJJHX4MC26 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
 
 /* Logo Section */
@@ -3129,22 +3325,18 @@ html.no-webp .media {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 60px 0 40px;
+  margin: 40px 0 30px;
   position: relative;
   z-index: 2;
 }
 
 .studio-logo {
-  width: 300px;
-  height: 350px;
+  width: 250px;
+  height: auto;
+  max-height: 300px;
   margin-bottom: 20px;
   filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.3));
 }
-
-.studio-name {
-  text-align: center;
-}
-
 
 /* Copyright */
 .copyright {
@@ -3163,10 +3355,52 @@ html.no-webp .media {
   margin: 0 auto;
 }
 
-/* Responsive Design */
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .contacts {
+    padding: 60px 0 30px;
+  }
+  
+  .contacts-header {
+    padding-left: 60px;
+    margin-bottom: 30px;
+  }
+  
+  .contacts-title::before {
+    left: -60px;
+    width: 40px;
+  }
+  
+  .contacts-content {
+    gap: 40px;
+    margin-bottom: 30px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 28px;
+  }
+  
+  .social-icon {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .social-icon img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .studio-logo {
+    width: 200px;
+  }
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .contacts {
-    padding: 60px 0;
+    padding: 60px 0 20px;
+    background-attachment: scroll;
   }
   
   .contacts-inner {
@@ -3175,8 +3409,9 @@ html.no-webp .media {
   }
   
   .contacts-header {
-    padding-left: 15px;
-    margin-bottom: 40px;
+    padding-left: 0;
+    text-align: center;
+    margin-bottom: 30px;
   }
   
   .contacts-title {
@@ -3184,11 +3419,178 @@ html.no-webp .media {
     margin-bottom: 20px;
   }
   
+  .contacts-title::before {
+    display: none;
+  }
+  
   .contacts-content {
-    max-width: 100%;
-    padding-left: 0;
     grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 25px;
+    padding-left: 0;
+  }
+  
+  .contacts-left,
+  .contacts-right {
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .welcome-description {
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  
+  .social-icons {
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .social-icon img {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .kickstarter-link {
+    justify-content: center;
+    font-size: 16px;
+  }
+  
+  .paypal-container {
+    justify-content: center;
+    max-width: 100%;
+  }
+  
+  .contacts-logo {
+    margin: 30px 0 20px;
+  }
+  
+  .studio-logo {
+    width: 180px;
+    margin-bottom: 15px;
+  }
+  
+  .copyright {
+    padding: 15px 0;
+  }
+  
+  .copyright p {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+}
+
+/* Small Mobile Responsive */
+@media (max-width: 480px) {
+  .contacts {
+    padding: 50px 0 15px;
+  }
+  
+  .contacts-title {
+    font-size: 24px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 20px;
+  }
+  
+  .welcome-description {
+    font-size: 14px;
+  }
+  
+  .social-icons {
+    gap: 8px;
+  }
+  
+  .social-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .social-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .email {
+    font-size: 14px;
+  }
+  
+  .kickstarter-link {
+    font-size: 15px;
+  }
+  
+  .studio-logo {
+    width: 150px;
+  }
+  
+  .copyright p {
+    font-size: 10px;
+  }
+}
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+  .contacts {
+    padding: 40px 0 10px;
+  }
+  
+  .contacts-title {
+    font-size: 22px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 18px;
+  }
+  
+  .social-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .social-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .studio-logo {
+    width: 130px;
+  }
+}
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .contacts {
+    padding: 60px 0 30px;
+  }
+  
+  .contacts-header {
+    padding-left: 60px;
+    margin-bottom: 30px;
+  }
+  
+  .contacts-title::before {
+    left: -60px;
+    width: 40px;
+  }
+  
+  .contacts-content {
     gap: 40px;
+    margin-bottom: 30px;
   }
   
   .welcome-title,
@@ -3196,14 +3598,195 @@ html.no-webp .media {
     font-size: 28px;
   }
   
-  
-  .social-icons {
-    justify-content: center;
+  .social-icon {
+    width: 44px;
+    height: 44px;
   }
   
+  .social-icon img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .studio-logo {
+    width: 200px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .contacts {
+    padding: 60px 0 20px;
+    background-attachment: scroll;
+  }
+  
+  .contacts-inner {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .contacts-header {
+    padding-left: 0;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .contacts-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .contacts-title::before {
+    display: none;
+  }
+  
+  .contacts-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 25px;
+    padding-left: 0;
+  }
+  
+  .contacts-left,
   .contacts-right {
     align-items: center;
     text-align: center;
+    gap: 20px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .welcome-description {
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  
+  .social-icons {
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .social-icon img {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .kickstarter-link {
+    justify-content: center;
+    font-size: 16px;
+  }
+  
+  .paypal-container {
+    justify-content: center;
+    max-width: 100%;
+  }
+  
+  .contacts-logo {
+    margin: 30px 0 20px;
+  }
+  
+  .studio-logo {
+    width: 180px;
+    margin-bottom: 15px;
+  }
+  
+  .copyright {
+    padding: 15px 0;
+  }
+  
+  .copyright p {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+}
+
+/* Small Mobile Responsive */
+@media (max-width: 480px) {
+  .contacts {
+    padding: 50px 0 15px;
+  }
+  
+  .contacts-title {
+    font-size: 24px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 20px;
+  }
+  
+  .welcome-description {
+    font-size: 14px;
+  }
+  
+  .social-icons {
+    gap: 8px;
+  }
+  
+  .social-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .social-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .email {
+    font-size: 14px;
+  }
+  
+  .kickstarter-link {
+    font-size: 15px;
+  }
+  
+  .studio-logo {
+    width: 150px;
+  }
+  
+  .copyright p {
+    font-size: 10px;
+  }
+}
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+  .contacts {
+    padding: 40px 0 10px;
+  }
+  
+  .contacts-title {
+    font-size: 22px;
+  }
+  
+  .welcome-title,
+  .support-title {
+    font-size: 18px;
+  }
+  
+  .social-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .social-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .studio-logo {
+    width: 130px;
   }
 }
 

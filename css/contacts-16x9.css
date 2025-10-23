@@ -1,152 +1,434 @@
-/* Contacts Section - 16:9 Aspect Ratio */
+/* Contacts Section - 16:9 Aspect Ratio - FIXED */
 
 .contacts {
-    padding: 0;
-    background: #0a0a0a url('../assets/images/contactsBg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
+  padding: 0;
+  background: #0a0a0a url('../assets/images/contactsBg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh; /* Изменил height на min-height */
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.contacts-inner {
+  max-width: 100% !important; /* Оставляем это свойство */
+  width: 100% !important;
+  margin: 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh; /* Добавил min-height вместо height */
+}
+
+.contacts-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh; /* Изменил height на min-height */
+  padding: 80px 0 0 0;
+}
+
+/* Основной контент занимает доступное пространство */
+.contacts-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 200px); /* Добавил минимальную высоту */
+}
+
+.contacts-header {
+  text-align: left;
+  margin-bottom: 40px; /* Уменьшил отступ */
+  padding-left: 105px;
+  width: 100%;
+}
+
+.contacts-title {
+  font-family: Cambria;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ff0000;
+  padding-left: 20px;
+  margin: 0 0 30px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+.contacts-title::before {
+  content: '';
+  position: absolute;
+  left: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: #ff0000;
+}
+
+.contacts-content {
+  position: relative;
+  padding-left: 120px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px; /* Уменьшил gap */
+  align-items: start;
+  width: 100%; /* Изменил на 100% */
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: auto; /* Убрал фиксированную высоту */
+}
+
+.contacts-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-start; /* Изменил на flex-start */
+}
+
+.contacts-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start; /* Изменил на flex-start */
+}
+
+/* Логотип и copyright прижаты к низу */
+.contacts-bottom-section {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px; /* Уменьшил gap */
+  padding-bottom: 30px; /* Уменьшил отступ */
+  min-height: 150px; /* Добавил минимальную высоту */
+}
+
+.contacts-logo {
+  margin: 0;
+}
+
+.studio-logo {
+  width: 200px;
+  height: 233px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.3));
+}
+
+.copyright {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.copyright p {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+  line-height: 1.4;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  .contacts-content {
     width: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  
-  .contacts-inner {
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 0;
-    padding: 0 20px;
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Центрирование всего контента */
-    height: 100%;
-  }
-  
-  .contacts-main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Распределяем пространство между элементами */
-    height: 100vh; /* Занимаем всю высоту viewport */
-    padding: 80px 0 0 0; /* Отступ сверху, снизу 0 */
-  }
-  
-  /* Основной контент занимает доступное пространство */
-  .contacts-content-wrapper {
-    flex: 1; /* Занимает все доступное пространство */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Центрируем основной контент по вертикали */
+    max-width: 100%;
+    padding-left: 60px;
+    gap: 40px;
   }
   
   .contacts-header {
-    text-align: left;
-    margin-bottom: 60px;
-    padding-left: 105px;
-    width: 100%;
-  }
-  
-  .contacts-title {
-    font-family: Cambria;
-    font-weight: 700;
-    font-style: normal;
-    font-size: 40px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    text-transform: uppercase;
-    color: #ff0000;
-    padding-left: 20px;
-    margin: 0 0 30px 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    position: relative;
+    padding-left: 60px;
+    margin-bottom: 30px;
   }
   
   .contacts-title::before {
-    content: '';
-    position: absolute;
-    left: -100px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 80px;
-    height: 4px;
-    background-color: #ff0000;
+    left: -60px;
+    width: 40px;
+  }
+}
+
+/* Mobile adjustments - COMPLETELY REWRITTEN */
+@media (max-width: 900px) {
+  .contacts {
+    padding: 60px 0 30px;
+    height: auto;
+    min-height: auto;
+    overflow: visible; /* Разрешаем скролл */
+  }
+  
+  .contacts-inner {
+    max-width: 100% !important; /* Сохраняем это свойство */
+    padding: 0 15px;
+    min-height: auto;
+  }
+  
+  .contacts-main {
+    height: auto;
+    min-height: auto;
+    padding: 0;
+  }
+  
+  .contacts-content-wrapper {
+    min-height: auto;
+    justify-content: flex-start;
+  }
+  
+  .contacts-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-left: 0;
+  }
+  
+  .contacts-title {
+    font-size: 28px;
+    color: #D40301;
+    margin-bottom: 20px;
+    text-align: center;
+    padding-left: 0;
+  }
+  
+  .contacts-title::before {
+    display: none;
   }
   
   .contacts-content {
-    position: relative;
-    padding-left: 120px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start; /* Выравнивание элементов по верху */
-    width: 1200px;
-    height: 300px;
-    max-width: 1200px;
-    max-height: 300px;
-    margin: 0 auto; /* Центрируем контент по горизонтали */
-  }
-  
-  .contacts-left {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    justify-content: center;
+    gap: 40px;
+    padding-left: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
   
-  .contacts-right {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
-    justify-content: center;
-  }
-  
-  
-  /* Логотип и copyright прижаты к низу */
-  .contacts-bottom-section {
-    margin-top: auto; /* Прижимаем к низу */
-    display: flex;
-    flex-direction: column;
+  .contacts-left, .contacts-right {
+    width: 100%;
     align-items: center;
-    gap: 40px; /* Промежуток 40px между логотипом и copyright */
-    padding-bottom: 40px; /* Отступ от нижней границы */
+    text-align: center;
+    gap: 15px;
   }
   
-  /* Убираем старые отступы у логотипа */
+  .welcome-title, .support-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .welcome-description {
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  .social-icons {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0;
+    justify-content: center;
+  }
+  
+  .social-icon {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .social-icon img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .email {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .contacts-bottom-section {
+    margin-top: 40px;
+    gap: 20px;
+    padding-bottom: 20px;
+    min-height: auto;
+  }
+  
   .contacts-logo {
-    margin: 0;
+    display: block; /* Показываем логотип */
   }
   
   .studio-logo {
-    width: 200px;
-    height: 233px;
-    margin-bottom: 10px;
-    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.3));
-  }
-  
-  /* Copyright прижимаем к самому низу */
-  .copyright {
-    text-align: center;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    z-index: 2;
+    width: 150px;
+    height: auto;
+    max-height: 175px;
   }
   
   .copyright p {
-    font-size: 12px;
-    color: #888;
-    margin: 0;
-    line-height: 1.4;
-    max-width: 800px;
-    margin: 0 auto;
+    font-size: 11px;
+    padding: 0 15px;
   }
+}
+
+@media (max-width: 768px) {
+  .contacts {
+    padding: 50px 0 20px;
+  }
+  
+  .contacts-title {
+    font-size: 24px;
+  }
+  
+  .contacts-content {
+    gap: 35px;
+  }
+  
+  .welcome-title, .support-title {
+    font-size: 20px;
+  }
+  
+  .welcome-description {
+    font-size: 14px;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .social-icon img {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .studio-logo {
+    width: 130px;
+    max-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contacts {
+    padding: 40px 0 15px;
+  }
+  
+  .contacts-inner {
+    padding: 0 10px;
+  }
+  
+  .contacts-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  .contacts-content {
+    gap: 30px;
+  }
+  
+  .welcome-title, .support-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  .welcome-description {
+    font-size: 13px;
+  }
+  
+  .social-icons {
+    gap: 10px;
+  }
+  
+  .social-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .social-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .email {
+    font-size: 13px;
+  }
+  
+  .contacts-bottom-section {
+    margin-top: 30px;
+    gap: 15px;
+  }
+  
+  .studio-logo {
+    width: 110px;
+    max-height: 130px;
+  }
+  
+  .copyright p {
+    font-size: 10px;
+    padding: 0 10px;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+  .contacts {
+    padding: 30px 0 10px;
+  }
+  
+  .contacts-title {
+    font-size: 20px;
+  }
+  
+  .welcome-title, .support-title {
+    font-size: 16px;
+  }
+  
+  .welcome-description {
+    font-size: 12px;
+  }
+  
+  .social-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .social-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .studio-logo {
+    width: 100px;
+    max-height: 120px;
+  }
+  
+  .copyright p {
+    font-size: 9px;
+  }
+}
+
+/* WebP support */
+html.webp .contacts {
+  background: #0a0a0a url('../assets/images/contactsBg.webp') !important;
+}
+
+html.no-webp .contacts {
+  background: #0a0a0a url('../assets/images/contactsBg.png') !important;
+}
    /* Desktop: Media section fixes */
    @media (min-width: 769px) {
      .media-inner {

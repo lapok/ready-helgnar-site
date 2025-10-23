@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-function getSlideWidth() {
+  function getSlideWidth() {
   const slide = featuresTrack.querySelector('.feature-slide');
   if (!slide) return 820; // fallback
   
@@ -136,6 +136,19 @@ function getSlideWidth() {
   
   // Просто возвращаем ширину слайда + gap (20px)
   return width + 20;
+}
+
+// Функция для быстрого скролла к слайду
+function fastScrollToSlide(slideIndex) {
+  if (!featuresTrack || !featuresWrapper) return;
+  
+  const slideWidth = getSlideWidth();
+  const scrollPosition = slideIndex * slideWidth;
+  
+  featuresWrapper.scrollTo({
+    left: scrollPosition,
+    behavior: 'smooth'
+  });
 }
 
   function updateFeaturesSlider() {
@@ -178,6 +191,9 @@ function getSlideWidth() {
   function nextFeaturesSlide() {
     if (featuresCurrentSlide < featuresTotalSlides - 1) {
       featuresCurrentSlide++;
+      // Пропускаем несколько слайдов для более быстрого скролла
+      const skipSlides = Math.min(3, featuresTotalSlides - featuresCurrentSlide - 1);
+      featuresCurrentSlide = Math.min(featuresCurrentSlide + skipSlides, featuresTotalSlides - 1);
       updateFeaturesSlider();
     }
   }
@@ -185,6 +201,9 @@ function getSlideWidth() {
   function prevFeaturesSlide() {
     if (featuresCurrentSlide > 0) {
       featuresCurrentSlide--;
+      // Пропускаем несколько слайдов для более быстрого скролла
+      const skipSlides = Math.min(3, featuresCurrentSlide);
+      featuresCurrentSlide = Math.max(featuresCurrentSlide - skipSlides, 0);
       updateFeaturesSlider();
     }
   }
@@ -201,8 +220,21 @@ function getSlideWidth() {
   if (featuresWrapper) {
     let scrollTimeout;
     
+    // Функция для обновления индикаторов скролла
+    function updateScrollIndicators() {
+      const scrollLeft = featuresWrapper.scrollLeft;
+      const maxScroll = featuresWrapper.scrollWidth - featuresWrapper.clientWidth;
+      
+      // Обновляем классы для градиентных индикаторов
+      featuresWrapper.classList.toggle('scrollable-left', scrollLeft > 0);
+      featuresWrapper.classList.toggle('scrollable-right', scrollLeft < maxScroll - 1);
+    }
+    
     featuresWrapper.addEventListener('scroll', () => {
       if (!featuresTrack) return;
+      
+      // Обновляем индикаторы скролла
+      updateScrollIndicators();
       
       // Дебаунс скролла для производительности
       clearTimeout(scrollTimeout);
@@ -226,6 +258,50 @@ function getSlideWidth() {
         }
       }, 100);
     });
+    
+    // Поддержка колесика мыши для скролла (ускоренная версия)
+    featuresWrapper.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      
+      const scrollAmount = 600; // Увеличили с 300 до 600 пикселей для более быстрого скролла
+      const currentScroll = featuresWrapper.scrollLeft;
+      
+      if (e.deltaY > 0) {
+        // Скролл вправо
+        featuresWrapper.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      } else {
+        // Скролл влево
+        featuresWrapper.scrollBy({
+          left: -scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    });
+    
+    // Инициализация индикаторов при загрузке
+    updateScrollIndicators();
+    
+    // Скрываем подсказку после первого взаимодействия
+    let hasInteracted = false;
+    
+    function hideScrollHint() {
+      if (!hasInteracted) {
+        hasInteracted = true;
+        const container = document.querySelector('.features-slider-container');
+        if (container) {
+          container.classList.add('hint-hidden');
+        }
+      }
+    }
+    
+    // Скрываем подсказку при любом взаимодействии
+    featuresWrapper.addEventListener('scroll', hideScrollHint);
+    featuresWrapper.addEventListener('wheel', hideScrollHint);
+    
+    // Убрали drag and drop поддержку для десктопа
   }
 
   // Touch events for features slider
@@ -831,7 +907,7 @@ function getSlideWidth() {
   function createDots() {
     screenshotsDots.innerHTML = '';
     const isMobile = window.innerWidth <= 768;
-    const dotsCount = isMobile ? 10 : 5;
+    const dotsCount = isMobile ? totalSlides : Math.ceil(totalSlides / 2);
     
     for (let i = 0; i < dotsCount; i++) {
       const dot = document.createElement('button');
